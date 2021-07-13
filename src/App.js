@@ -17,7 +17,7 @@ function App() {
         <Route exact path="/articles/:topic">
           <Articles />
         </Route>
-        <Route exact path="article/:article_id">
+        <Route exact path="/article/:article_id">
           <SingleArticle />
         </Route>
       </Switch>

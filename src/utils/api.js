@@ -18,7 +18,7 @@ export const getTopics = async () => {
 export const getArticles = async (topic) => {
   // let path = "/articles";
   // if (topic) path += `?topic=${topic}`;
-  const { data } = await articlesApi.get("articles", {
+  const { data } = await articlesApi.get("/articles", {
     params: {
       topic: topic,
     },
@@ -27,6 +27,6 @@ export const getArticles = async (topic) => {
 };
 
 export const getArticle = async (article_id) => {
-  const { data } = await articlesApi.get(`articles/${article_id}`);
+  const { data } = await articlesApi.get(`/articles/${article_id}`);
   return data.article;
 };

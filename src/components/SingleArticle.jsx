@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router";
 import { getArticle } from "../utils/api.js";
+import { Link } from "react-router-dom";
 
 const SingleArticle = () => {
   const [article, setArticle] = useState([]);
@@ -11,10 +12,24 @@ const SingleArticle = () => {
       console.log(articleFromApi);
       setArticle(articleFromApi);
     });
-  });
+  }, [article_id]);
+
   return (
     <div className="Article">
-      <h1>Hello...{article.title}</h1>
+      <ul>
+        {article.map((article) => {
+          return (
+            <li key={article.article_id}>
+              <Link
+                to={`/article/${article.article_id}`}
+                key={article.article_id}
+              >
+                <h3>{article.title}</h3>
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
     </div>
   );
 };
