@@ -7,6 +7,7 @@ import {
   postComment,
 } from "../utils/api.js";
 import { UserContext } from "../context/User";
+import { Expandable } from "../components/Expandable";
 
 const SingleArticle = () => {
   const [article, setArticle] = useState([]);
@@ -46,7 +47,7 @@ const SingleArticle = () => {
     event.preventDefault();
     postComment(article_id, user, newComment)
       .then((comment) => {
-        // console.log(comment);
+        //console.log(comment);
         setSubmitSuccess(true);
         setComments((currComments) => {
           const newComments = [...currComments];
@@ -122,20 +123,6 @@ const SingleArticle = () => {
           </ul>
         </Expandable>
       </div>
-    </div>
-  );
-};
-
-const Expandable = ({ children }) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleIsOpen = () => {
-    setIsOpen((currOpen) => !currOpen);
-  };
-  return (
-    <div>
-      <button onClick={toggleIsOpen}>{isOpen ? "Close" : "Open"}</button>
-      {isOpen && children}
     </div>
   );
 };
