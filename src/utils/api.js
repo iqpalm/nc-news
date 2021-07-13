@@ -30,3 +30,15 @@ export const getArticle = async (article_id) => {
   const { data } = await articlesApi.get(`/articles/${article_id}`);
   return data.article;
 };
+
+export const patchVotes = async (article_id) => {
+  const { data } = await articlesApi.patch(`/articles/${article_id}`, {
+    inc_votes: 1,
+  });
+  console.log(data.article);
+};
+
+export const getComments = async (article_id) => {
+  const { data } = await articlesApi.get(`/articles/${article_id}/comments`);
+  return data.comments;
+};
