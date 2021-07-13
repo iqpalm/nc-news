@@ -42,3 +42,11 @@ export const getComments = async (article_id) => {
   const { data } = await articlesApi.get(`/articles/${article_id}/comments`);
   return data.comments;
 };
+
+export const postComment = async (article_id, username, comment) => {
+  const { data } = await articlesApi.post(`/articles/${article_id}/comments`, {
+    username: username,
+    body: comment,
+  });
+  return data.comment[0];
+};

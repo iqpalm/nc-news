@@ -1,6 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router";
-import { getArticle, patchVotes, getComments } from "../utils/api.js";
+import {
+  getArticle,
+  patchVotes,
+  getComments,
+  postComment,
+} from "../utils/api.js";
+import { UserContext } from "../context/User";
 
 const SingleArticle = () => {
   const [article, setArticle] = useState([]);
@@ -8,6 +14,9 @@ const SingleArticle = () => {
   const [votesChange, setVotesChange] = useState(0);
   const [hasError, setHasError] = useState(false);
   const [comments, setComments] = useState([]);
+  const { user } = useContext(UserContext);
+  const [newComment, setNewComment] = useState("");
+  const [submitSuccess, setSubmitSuccess] = useState(false);
 
   useEffect(() => {
     getArticle(article_id).then((articleFromApi) => {
@@ -33,6 +42,27 @@ const SingleArticle = () => {
     });
   }, [article_id]);
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    postComment(article_id, user, newComment)
+      .then((comment) => {
+        // console.log(comment);
+        setSubmitSuccess(true);
+        setComments((currComments) => {
+          const newComments = [...currComments];
+          newComments.unshift(comment);
+          return newComments;
+        });
+      })
+      .catch((err) => {
+        setHasError(true);
+      });
+  };
+
+  const handleChange = (event) => {
+    setNewComment(event.target.value);
+  };
+
   return (
     <div className="Article">
       <ul>
@@ -56,22 +86,18 @@ const SingleArticle = () => {
         <ul>Comments</ul>
         <Expandable>
           <h5>Add comment</h5>
-          <form>
+          <form onSubmit={handleSubmit}>
             <div>
               <label htmlFor="username">
                 username:
-                <input
-                  id="username"
-                  name="username"
-                  type="text"
-                  placeholder="username"
-                />
+                <input id="username" name="username" value={user} readOnly />
               </label>
             </div>
             <div>
               <label htmlFor="body">
                 comment:
                 <input
+                  onChange={handleChange}
                   id="body"
                   name="body"
                   type="text"
@@ -80,6 +106,8 @@ const SingleArticle = () => {
               </label>
             </div>
             <button>submit</button>
+            {hasError && <p>Oops! Something's gone wrong!</p>}
+            {submitSuccess && <p>Comment submitted successfully!</p>}
           </form>
           <ul>
             {comments.map((comment) => {
