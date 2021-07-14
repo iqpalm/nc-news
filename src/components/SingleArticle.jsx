@@ -10,12 +10,12 @@ import { UserContext } from "../context/User";
 import { Expandable } from "../components/Expandable";
 
 const SingleArticle = () => {
-  const [article, setArticle] = useState([]);
+  const { user } = useContext(UserContext);
   const { article_id } = useParams();
+  const [article, setArticle] = useState([]);
   const [votesChange, setVotesChange] = useState(0);
   const [hasError, setHasError] = useState(false);
   const [comments, setComments] = useState([]);
-  const { user } = useContext(UserContext);
   const [newComment, setNewComment] = useState("");
   const [submitSuccess, setSubmitSuccess] = useState(false);
 
@@ -61,8 +61,36 @@ const SingleArticle = () => {
   };
 
   const handleChange = (event) => {
+    setHasError(false);
+    setSubmitSuccess(false);
     setNewComment(event.target.value);
   };
+
+  function compare(a, b) {
+    const dateA = a.created_at;
+    const dateB = b.created_at;
+
+    let comparison = 0;
+    if (dateA > dateB) {
+      comparison = 1;
+    } else if (dateA < dateB) {
+      comparison = -1;
+    }
+    return comparison * -1;
+  }
+
+  if (comments.length !== 0) {
+    comments.forEach((comment) => {
+      const date = new Date(comment.created_at);
+      const month = date.getMonth();
+      const resultMonth = month < 10 ? "0" + month : month;
+      const day = date.getDate();
+      const resultDay = day < 10 ? "0" + day : day;
+      comment.new_created_at = `${resultDay}-${resultMonth}-${date.getFullYear()}`;
+    });
+  }
+  const sortedComments = [...comments].sort(compare);
+  //console.log(sortedComments);
 
   return (
     <div className="Article">
@@ -111,12 +139,12 @@ const SingleArticle = () => {
             {submitSuccess && <p>Comment submitted successfully!</p>}
           </form>
           <ul>
-            {comments.map((comment) => {
+            {sortedComments.map((comment) => {
               return (
                 <li key={comment.comment_id}>
                   <p>{comment.body}</p>
                   <p>{comment.author}</p>
-                  <p>{comment.created_at}</p>
+                  <p>{comment.new_created_at}</p>
                 </li>
               );
             })}

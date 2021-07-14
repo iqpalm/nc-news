@@ -5,30 +5,55 @@ import { Link } from "react-router-dom";
 
 const Articles = () => {
   const [articles, setArticles] = useState([]);
-  const [sort, setSort] = useState("date_created");
+  const [sort, setSort] = useState("created_at");
+  const [order, setOrder] = useState("desc");
   const { topic } = useParams();
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
-    getArticles(topic).then((articlesFromApi) => {
-      setArticles(articlesFromApi);
-    });
-  }, [topic]);
+    setHasError(false);
+    setIsLoading(true);
+    getArticles(topic, sort, order)
+      .then((articlesFromApi) => {
+        setArticles(articlesFromApi);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.log(err.response.data.msg);
+        setErrorMessage(err.response.data.msg);
+        setHasError(true);
+        setIsLoading(false);
+      });
+  }, [topic, sort, order]);
 
   const handleChange = (event) => {
-    console.log(event.target.value);
     setSort(event.target.value);
-    console.log(event.target.value);
   };
 
+  const handleOrder = (event) => {
+    setOrder(event.target.value);
+  };
+
+  if (isLoading) return <p>Loading...</p>;
+  if (hasError) return <p>Invalid path chosen...{errorMessage}</p>;
   return (
     <div className="Articles">
       <h2>{topic} Articles</h2>
       <label htmlFor="sort_by">
         Sort_by:
         <select value={sort} onChange={handleChange}>
-          <option value="date_created">Date created</option>
+          <option value="created_at">Date created</option>
           <option value="comment_count">No of comments</option>
           <option value="votes">No of votes</option>
+        </select>
+      </label>
+      <label htmlFor="order">
+        Order:
+        <select value={order} onChange={handleOrder}>
+          <option value="asc">Ascending</option>
+          <option value="desc">Descending</option>
         </select>
       </label>
       <ul>

@@ -15,12 +15,14 @@ export const getTopics = async () => {
   return data.topics;
 };
 
-export const getArticles = async (topic) => {
+export const getArticles = async (topic, sort, order) => {
   // let path = "/articles";
   // if (topic) path += `?topic=${topic}`;
   const { data } = await articlesApi.get("/articles", {
     params: {
       topic: topic,
+      sort_by: sort,
+      order: order,
     },
   });
   return data.articles;
@@ -35,7 +37,7 @@ export const patchVotes = async (article_id) => {
   const { data } = await articlesApi.patch(`/articles/${article_id}`, {
     inc_votes: 1,
   });
-  console.log(data.article);
+  return data.article;
 };
 
 export const getComments = async (article_id) => {
