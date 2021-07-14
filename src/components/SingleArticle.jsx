@@ -14,16 +14,30 @@ const SingleArticle = () => {
   const { article_id } = useParams();
   const [article, setArticle] = useState([]);
   const [votesChange, setVotesChange] = useState(0);
-  const [hasError, setHasError] = useState(false);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [hasCommentError, setHasCommentError] = useState(false);
+  const [hasVoteError, setHasVoteError] = useState(false);
 
   useEffect(() => {
-    getArticle(article_id).then((articleFromApi) => {
-      //console.log(articleFromApi);
-      setArticle(articleFromApi);
-    });
+    setHasError(false);
+    setIsLoading(true);
+    getArticle(article_id)
+      .then((articleFromApi) => {
+        //console.log(articleFromApi);
+        setArticle(articleFromApi);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.log(err.response.data.msg);
+        setErrorMessage(err.response.data.msg);
+        setHasError(true);
+        setIsLoading(false);
+      });
   }, [article_id]);
 
   const incVotes = () => {
@@ -31,7 +45,7 @@ const SingleArticle = () => {
       return currVotesChange + 1;
     });
     patchVotes(article_id).catch((err) => {
-      setHasError(true);
+      setHasVoteError(true);
       setVotesChange(0);
     });
   };
@@ -56,12 +70,12 @@ const SingleArticle = () => {
         });
       })
       .catch((err) => {
-        setHasError(true);
+        setHasCommentError(true);
       });
   };
 
   const handleChange = (event) => {
-    setHasError(false);
+    setHasCommentError(false);
     setSubmitSuccess(false);
     setNewComment(event.target.value);
   };
@@ -92,6 +106,8 @@ const SingleArticle = () => {
   const sortedComments = [...comments].sort(compare);
   //console.log(sortedComments);
 
+  if (isLoading) return <p>Loading...</p>;
+  if (hasError) return <p>Invalid path chosen...{errorMessage}</p>;
   return (
     <div className="Article">
       <ul>
@@ -103,7 +119,7 @@ const SingleArticle = () => {
               <p>{article.body}</p>
               <h5>Author: {article.author}</h5>
               <h5>Votes: {article.votes + votesChange}</h5>
-              {hasError && <p>Oops! Something's gone wrong!</p>}
+              {hasVoteError && <p>Oops! Something's gone wrong!</p>}
               <button disabled={votesChange > 0} onClick={incVotes}>
                 Like!
               </button>
@@ -135,16 +151,17 @@ const SingleArticle = () => {
               </label>
             </div>
             <button>submit</button>
-            {hasError && <p>Oops! Something's gone wrong!</p>}
+            {hasCommentError && <p>Oops! Something's gone wrong!</p>}
             {submitSuccess && <p>Comment submitted successfully!</p>}
           </form>
           <ul>
             {sortedComments.map((comment) => {
               return (
-                <li key={comment.comment_id}>
+                <li id="comments" key={comment.comment_id}>
                   <p>{comment.body}</p>
                   <p>{comment.author}</p>
                   <p>{comment.new_created_at}</p>
+                  <p>----------------------</p>
                 </li>
               );
             })}

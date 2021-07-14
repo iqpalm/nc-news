@@ -15,16 +15,14 @@ const Nav = () => {
 
   return (
     <nav className="Nav">
-      <div>
-        {topics.map((topic) => {
-          return (
-            <Link to={`/articles/${topic.slug}`} key={topic.slug}>
-              {topic.slug}
-            </Link>
-          );
-        })}
-      </div>
-      <h3>User: {user}</h3>
+      {topics.map((topic) => {
+        return (
+          <Link id="link" to={`/articles/${topic.slug}`} key={topic.slug}>
+            {topic.slug}
+          </Link>
+        );
+      })}
+      <h3 id="user">User: {user}</h3>
     </nav>
   );
 };

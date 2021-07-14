@@ -9,7 +9,7 @@ const Articles = () => {
   const [order, setOrder] = useState("desc");
   const { topic } = useParams();
   const [isLoading, setIsLoading] = useState(true);
-  const [hasError, setHasError] = useState(true);
+  const [hasError, setHasError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
@@ -38,9 +38,10 @@ const Articles = () => {
 
   if (isLoading) return <p>Loading...</p>;
   if (hasError) return <p>Invalid path chosen...{errorMessage}</p>;
+
   return (
     <div className="Articles">
-      <h2>{topic} Articles</h2>
+      <h2 id="topic">{topic} articles</h2>
       <label htmlFor="sort_by">
         Sort_by:
         <select value={sort} onChange={handleChange}>

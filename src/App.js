@@ -24,6 +24,9 @@ function App() {
           <Route exact path="/article/:article_id">
             <SingleArticle />
           </Route>
+          <Route path="/">
+            <p>Invalid path chosen...please check url address</p>
+          </Route>
         </Switch>
       </div>
     </UserContext.Provider>
