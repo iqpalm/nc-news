@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 
 const Articles = () => {
   const [articles, setArticles] = useState([]);
+  const [sort, setSort] = useState("date_created");
   const { topic } = useParams();
 
   useEffect(() => {
@@ -13,9 +14,23 @@ const Articles = () => {
     });
   }, [topic]);
 
+  const handleChange = (event) => {
+    console.log(event.target.value);
+    setSort(event.target.value);
+    console.log(event.target.value);
+  };
+
   return (
     <div className="Articles">
       <h2>{topic} Articles</h2>
+      <label htmlFor="sort_by">
+        Sort_by:
+        <select value={sort} onChange={handleChange}>
+          <option value="date_created">Date created</option>
+          <option value="comment_count">No of comments</option>
+          <option value="votes">No of votes</option>
+        </select>
+      </label>
       <ul>
         {articles.map((article) => {
           return (
