@@ -44,7 +44,7 @@ const Articles = () => {
       <h2 id="topic">{topic} articles</h2>
       <label htmlFor="sort_by">
         Sort_by:
-        <select value={sort} onChange={handleChange}>
+        <select id="sort_by" value={sort} onChange={handleChange}>
           <option value="created_at">Date created</option>
           <option value="comment_count">No of comments</option>
           <option value="votes">No of votes</option>
@@ -52,7 +52,7 @@ const Articles = () => {
       </label>
       <label htmlFor="order">
         Order:
-        <select value={order} onChange={handleOrder}>
+        <select id="order" value={order} onChange={handleOrder}>
           <option value="asc">Ascending</option>
           <option value="desc">Descending</option>
         </select>

@@ -1,6 +1,5 @@
 .App {
   text-align: center;
-  /* background-color: rgb(205, 169, 240); */
   display: grid;
   grid-template-columns: 100%;
   grid-template-rows: min-content min-content auto;
@@ -10,6 +9,11 @@
     "content";
   min-height: 100vh;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+#logo {
+  height: 125px;
+  width: 150px;
 }
 
 .Header {
@@ -27,7 +31,7 @@ h1 {
   display: inline;
   height: 70px;
   position: sticky;
-  top: 80px;
+  top: 129px;
   color: white;
 }
 
@@ -43,10 +47,17 @@ li {
   color: white;
 }
 
+.Nav #user {
+  margin-block-start: 0.5em;
+  margin-block-end: 0;
+}
+
 .Articles #topic {
   font-weight: bold;
   font-variant: small-caps;
   font-size: x-large;
+  margin-block-start: 0.5em;
+  margin-block-end: 0.5em;
 }
 
 ul {

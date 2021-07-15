@@ -5,6 +5,7 @@ import Header from "./components/Header";
 import Nav from "./components/Nav";
 import Articles from "./components/Articles";
 import SingleArticle from "./components/SingleArticle";
+import Footer from "./components/Footer";
 import { UserContext } from "./context/User";
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
             <p>Invalid path chosen...please check url address</p>
           </Route>
         </Switch>
+        <Footer />
       </div>
     </UserContext.Provider>
   );

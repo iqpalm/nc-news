@@ -120,7 +120,11 @@ const SingleArticle = () => {
               <h5>Author: {article.author}</h5>
               <h5>Votes: {article.votes + votesChange}</h5>
               {hasVoteError && <p>Oops! Something's gone wrong!</p>}
-              <button disabled={votesChange > 0} onClick={incVotes}>
+              <button
+                id="article__vote_button"
+                disabled={votesChange > 0}
+                onClick={incVotes}
+              >
                 Like!
               </button>
             </li>
