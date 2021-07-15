@@ -24,11 +24,11 @@ h1 {
 
 .Nav {
   background-color: rgb(0, 148, 198);
-  border: solid thin grey;
   display: inline;
   height: 70px;
   position: sticky;
   top: 80px;
+  color: white;
 }
 
 li {
