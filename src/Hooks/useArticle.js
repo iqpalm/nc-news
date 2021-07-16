@@ -1,17 +1,19 @@
 import { useState, useEffect } from "react";
-import { getArticles } from "../utils/api";
+import { getArticle } from "../utils/api";
 
-const useArticles = (topic, sort, order) => {
-  const [articles, setArticles] = useState([]);
+const useArticle = (article_id) => {
+  const [article, setArticle] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
   useEffect(() => {
     setHasError(false);
     setIsLoading(true);
-    getArticles(topic, sort, order)
-      .then((articlesFromApi) => {
-        setArticles(articlesFromApi);
+    getArticle(article_id)
+      .then((articleFromApi) => {
+        //console.log(articleFromApi);
+        setArticle(articleFromApi);
         setIsLoading(false);
       })
       .catch((err) => {
@@ -20,13 +22,8 @@ const useArticles = (topic, sort, order) => {
         setHasError(true);
         setIsLoading(false);
       });
-  }, [topic, sort, order]);
-  return {
-    articles,
-    isLoading,
-    hasError,
-    errorMessage,
-  };
+  }, [article_id]);
+  return { article, isLoading, hasError, errorMessage };
 };
 
-export default useArticles;
+export default useArticle;

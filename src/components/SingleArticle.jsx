@@ -1,45 +1,21 @@
 import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router";
-import {
-  getArticle,
-  patchVotes,
-  getComments,
-  postComment,
-} from "../utils/api.js";
+import { patchVotes, getComments, postComment } from "../utils/api.js";
 import { UserContext } from "../context/User";
 import { Expandable } from "../components/Expandable";
 import { sortComments } from "../utils/utils";
+import useArticle from "../Hooks/useArticle.js";
 
 const SingleArticle = () => {
   const { user } = useContext(UserContext);
   const { article_id } = useParams();
-  const [article, setArticle] = useState([]);
+  const { article, isLoading, hasError, errorMessage } = useArticle(article_id);
   const [votesChange, setVotesChange] = useState(0);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
   const [submitSuccess, setSubmitSuccess] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [hasError, setHasError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
   const [hasCommentError, setHasCommentError] = useState(false);
   const [hasVoteError, setHasVoteError] = useState(false);
-
-  useEffect(() => {
-    setHasError(false);
-    setIsLoading(true);
-    getArticle(article_id)
-      .then((articleFromApi) => {
-        //console.log(articleFromApi);
-        setArticle(articleFromApi);
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        //console.log(err.response.data.msg);
-        setErrorMessage(err.response.data.msg);
-        setHasError(true);
-        setIsLoading(false);
-      });
-  }, [article_id]);
 
   const incVotes = () => {
     setVotesChange((currVotesChange) => {
