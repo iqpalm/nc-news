@@ -93,8 +93,11 @@ const SingleArticle = () => {
     return comparison * -1;
   }
 
-  if (comments.length !== 0) {
-    comments.forEach((comment) => {
+  const sortedComments = [...comments].sort(compare);
+  //console.log(sortedComments);
+
+  if (sortedComments.length !== 0) {
+    sortedComments.forEach((comment) => {
       const date = new Date(comment.created_at);
       const month = date.getMonth();
       const resultMonth = month < 10 ? "0" + month : month;
@@ -103,8 +106,6 @@ const SingleArticle = () => {
       comment.new_created_at = `${resultDay}-${resultMonth}-${date.getFullYear()}`;
     });
   }
-  const sortedComments = [...comments].sort(compare);
-  //console.log(sortedComments);
 
   if (isLoading) return <p>Loading...</p>;
   if (hasError) return <p>Invalid path chosen...{errorMessage}</p>;
