@@ -1,32 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useParams } from "react-router";
-import { getArticles } from "../utils/api.js";
 import { Link } from "react-router-dom";
+import useArticles from "../Hooks/useArticles.js";
 
 const Articles = () => {
-  const [articles, setArticles] = useState([]);
   const [sort, setSort] = useState("created_at");
   const [order, setOrder] = useState("desc");
   const { topic } = useParams();
-  const [isLoading, setIsLoading] = useState(true);
-  const [hasError, setHasError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-
-  useEffect(() => {
-    setHasError(false);
-    setIsLoading(true);
-    getArticles(topic, sort, order)
-      .then((articlesFromApi) => {
-        setArticles(articlesFromApi);
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        //console.log(err.response.data.msg);
-        setErrorMessage(err.response.data.msg);
-        setHasError(true);
-        setIsLoading(false);
-      });
-  }, [topic, sort, order]);
+  const { articles, isLoading, hasError, errorMessage } = useArticles(
+    topic,
+    sort,
+    order
+  );
 
   const handleChange = (event) => {
     setSort(event.target.value);

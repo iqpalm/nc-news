@@ -8,7 +8,7 @@ import {
 } from "../utils/api.js";
 import { UserContext } from "../context/User";
 import { Expandable } from "../components/Expandable";
-import { compare } from "../utils/utils";
+import { sortComments } from "../utils/utils";
 
 const SingleArticle = () => {
   const { user } = useContext(UserContext);
@@ -65,8 +65,7 @@ const SingleArticle = () => {
         //console.log(comment);
         setSubmitSuccess(true);
         setComments((currComments) => {
-          const newComments = [...currComments];
-          newComments.unshift(comment);
+          const newComments = [comment, ...currComments];
           return newComments;
         });
       })
@@ -81,19 +80,7 @@ const SingleArticle = () => {
     setNewComment(event.target.value);
   };
 
-  const sortedComments = [...comments].sort(compare);
-  //console.log(sortedComments);
-
-  if (sortedComments.length !== 0) {
-    sortedComments.forEach((comment) => {
-      const date = new Date(comment.created_at);
-      const month = date.getMonth();
-      const resultMonth = month < 10 ? "0" + month : month;
-      const day = date.getDate();
-      const resultDay = day < 10 ? "0" + day : day;
-      comment.new_created_at = `${resultDay}-${resultMonth}-${date.getFullYear()}`;
-    });
-  }
+  const sortedComments = sortComments(comments);
 
   if (isLoading) return <p>Loading...</p>;
   if (hasError) return <p>Invalid path chosen...{errorMessage}</p>;
