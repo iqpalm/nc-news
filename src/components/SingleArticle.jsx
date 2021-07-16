@@ -8,6 +8,7 @@ import {
 } from "../utils/api.js";
 import { UserContext } from "../context/User";
 import { Expandable } from "../components/Expandable";
+import { compare } from "../utils/utils";
 
 const SingleArticle = () => {
   const { user } = useContext(UserContext);
@@ -79,19 +80,6 @@ const SingleArticle = () => {
     setSubmitSuccess(false);
     setNewComment(event.target.value);
   };
-
-  function compare(a, b) {
-    const dateA = a.created_at;
-    const dateB = b.created_at;
-
-    let comparison = 0;
-    if (dateA > dateB) {
-      comparison = 1;
-    } else if (dateA < dateB) {
-      comparison = -1;
-    }
-    return comparison * -1;
-  }
 
   const sortedComments = [...comments].sort(compare);
   //console.log(sortedComments);
