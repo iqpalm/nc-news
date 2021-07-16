@@ -1,38 +1,23 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 import { useParams } from "react-router";
-import { patchVotes, getComments, postComment } from "../utils/api.js";
+import { postComment } from "../utils/api.js";
 import { UserContext } from "../context/User";
 import { Expandable } from "../components/Expandable";
 import { sortComments } from "../utils/utils";
 import useArticle from "../Hooks/useArticle.js";
+import useVotes from "../Hooks/useVotes";
+import useComments from "../Hooks/useComments.js";
 
 const SingleArticle = () => {
   const { user } = useContext(UserContext);
   const { article_id } = useParams();
   const { article, isLoading, hasError, errorMessage } = useArticle(article_id);
-  const [votesChange, setVotesChange] = useState(0);
-  const [comments, setComments] = useState([]);
+  const { votesChange, incVotes, hasVoteError } = useVotes(article_id);
+
+  const { comments, setComments } = useComments(article_id);
   const [newComment, setNewComment] = useState("");
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [hasCommentError, setHasCommentError] = useState(false);
-  const [hasVoteError, setHasVoteError] = useState(false);
-
-  const incVotes = () => {
-    setVotesChange((currVotesChange) => {
-      return currVotesChange + 1;
-    });
-    patchVotes(article_id).catch((err) => {
-      setHasVoteError(true);
-      setVotesChange(0);
-    });
-  };
-
-  useEffect(() => {
-    getComments(article_id).then((commentsFromApi) => {
-      //console.log(commentsFromApi);
-      setComments(commentsFromApi);
-    });
-  }, [article_id]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
