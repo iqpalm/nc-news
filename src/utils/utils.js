@@ -13,7 +13,6 @@ const compare = (a, b) => {
 
 export const sortComments = (comments) => {
   const sortedComments = [...comments].sort(compare);
-  //console.log(sortedComments);
 
   if (sortedComments.length !== 0) {
     sortedComments.forEach((comment) => {

@@ -15,7 +15,6 @@ const useArticles = (topic, sort, order) => {
         setIsLoading(false);
       })
       .catch((err) => {
-        //console.log(err.response.data.msg);
         setErrorMessage(err.response.data.msg);
         setHasError(true);
         setIsLoading(false);

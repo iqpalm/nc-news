@@ -5,12 +5,6 @@ const articlesApi = axios.create({
 });
 
 export const getTopics = async () => {
-  //Using promise
-  //   articlesApi.get("/topics").then((response) => {
-  //     console.log(response.data);
-  //   });
-
-  //Using async-await
   const { data } = await articlesApi.get("/topics");
   return data.topics;
 };
@@ -30,7 +24,7 @@ export const getArticles = async (topic, sort, order) => {
 
 export const getArticle = async (article_id) => {
   const { data } = await articlesApi.get(`/articles/${article_id}`);
-  return data.article;
+  return data.article[0];
 };
 
 export const patchVotes = async (article_id) => {
