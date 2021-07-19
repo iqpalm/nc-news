@@ -34,7 +34,7 @@ Minimum node version required : v16.1.0
 
 ## Link to the hosted front-end project
 
-......Placeholder link.......
+https://iqpalm-ncnews24.netlify.app/
 
 ## Link to back-end repository of the project
 
